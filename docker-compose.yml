@@ -1,6 +1,5 @@
 services:
   backend:
-    restart: always
     build: ./backend
     ports:
       - "5000:5000"
@@ -20,7 +19,7 @@ services:
     environment:
       MONGO_INITDB_DATABASE: arvayx_journal
     volumes:
-    - mongo-data:/data/db  # persistent storage
+      - mongo-data:/data/db 
 
   redis:
     image: "redis:7-alpine"
@@ -31,6 +30,10 @@ services:
     build: ./frontend
     ports:
       - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:5000
+    depends_on:
+      - backend
 
 volumes:
-    mongo-data:
+  mongo-data:
